@@ -3,77 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0d0d0e" />
+    <meta name="theme-color" content="#0e0e0e" />
     <meta name="description" content="Virello — личное портфолио Артёма: продуманные цифровые интерфейсы и полезные системы." />
     <title>Артём — Virello</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Перейти к содержимому</a>
     <header class="site-header" data-header>
-      <div class="shell nav-shell">
-        <a class="wordmark" href="#top" aria-label="Virello — на главную">Virello<span class="wordmark-dot">.</span></a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
-          <span>Меню</span>
-          <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
-        </button>
+      <div class="container nav-shell">
+        <a class="wordmark" href="#top" aria-label="Virello — на главную">Virello<span>.</span></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle><span>Меню</span><span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
         <nav class="site-nav" id="site-nav" aria-label="Основная навигация" data-site-nav>
-          <a href="#work">Работа</a>
-          <a href="#about">Обо мне</a>
-          <a href="#contact">Контакты</a>
-          <a class="nav-link-external" href="https://github.com/orskiyghost-png/Virello" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+          <a href="#work">Работа</a><a href="#about">Обо мне</a><a href="#contact">Контакты</a><a href="https://github.com/orskiyghost-png/Virello" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
         </nav>
       </div>
     </header>
 
     <main id="main-content">
-      <section class="hero shell" id="top" aria-labelledby="hero-title">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Независимый дизайнер и разработчик</p>
-          <h1 id="hero-title">Цифровая работа<br /><em>с собственным характером.</em></h1>
-          <p class="hero-intro">Я Артём. Virello — мой развивающийся архив продуманных интерфейсов, полезных систем и деталей, которые делают веб живым.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#work">Посмотреть работу <span aria-hidden="true">↓</span></a>
-            <a class="text-link" href="#contact">Начать разговор <span aria-hidden="true">↗</span></a>
-          </div>
+      <section class="hero container" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="kicker"><span class="status-dot" aria-hidden="true"></span> Личное портфолио / 2026</p>
+          <h1 id="hero-title">Делаю цифровые вещи<br /><em>с характером.</em></h1>
+          <p class="hero-lead">Я Артём — дизайнер и разработчик. Virello собирает мои идеи о ясных интерфейсах, полезных системах и вебе, который не требует лишних объяснений.</p>
+          <div class="hero-actions"><a class="button button-primary" href="#work">Смотреть работу <span aria-hidden="true">↓</span></a><a class="inline-link" href="#contact">Связаться <span aria-hidden="true">↗</span></a></div>
         </div>
-        <div class="hero-visual reveal reveal-delay" aria-label="Спокойное исследование цифрового объекта с маркером Virello" role="img">
-          <div class="visual-caption"><span>Virello / 01</span><span>Полевое исследование</span></div>
-          <div class="orbit orbit-large" aria-hidden="true"></div>
-          <div class="orbit orbit-small" aria-hidden="true"></div>
-          <div class="visual-core" aria-hidden="true"><span class="core-mark">V</span><span class="core-line"></span></div>
-          <div class="visual-note visual-note-top">Тихий<br />сигнал</div>
-          <div class="visual-note visual-note-bottom">Создано для<br /><strong>ясности</strong></div>
-          <span class="visual-index" aria-hidden="true">01</span>
-        </div>
+        <figure class="hero-art" aria-labelledby="art-caption">
+          <div class="art-topline"><span>VIRELLO / 001</span><span>АРТЁМ</span></div>
+          <div class="art-field"><span class="art-index">01</span><span class="art-word">V</span><span class="art-rule" aria-hidden="true"></span><span class="art-caption">Форма<br />следует смыслу</span></div>
+          <figcaption id="art-caption">Фрагмент визуального языка Virello — тихий знак, который помогает ориентироваться.</figcaption>
+        </figure>
       </section>
 
-      <section class="section shell work-section" id="work" aria-labelledby="work-title">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Выбранные направления</p>
-          <h2 id="work-title">Небольшая практика,<br /><em>которая ещё складывается.</em></h2>
-          <p class="section-intro">Здесь нет длинного списка выдуманных клиентов. Только направления, которые мне интересно развивать: цифровая работа, заслуживающая внимания точностью.</p>
-        </div>
-        <div class="work-list reveal reveal-delay">
-          <article class="work-item"><div class="work-number">01</div><div class="work-body"><h3>Интерфейсы с пульсом</h3><p>Спокойные отзывчивые экраны, где иерархия делает основную работу, а каждое состояние понятно.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
-          <article class="work-item"><div class="work-number">02</div><div class="work-body"><h3>Системы, в которых есть человек</h3><p>Гибкие основы для продуктов, которым нужно расти, не теряя собственного характера.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
-          <article class="work-item"><div class="work-number">03</div><div class="work-body"><h3>Небольшие, хорошо сделанные эксперименты</h3><p>Продуманные прототипы, которые проверяют идею, показывают направление или просто делают веб интереснее.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
-        </div>
+      <section class="statement container reveal" aria-label="Манифест Virello"><p class="kicker">01 / Принцип</p><p class="statement-text">Сначала — <em>смысл.</em><br />Потом — форма.</p><p class="statement-note">Не добавляю детали, пока не понимаю, какую работу они делают.</p></section>
+
+      <section class="work container" id="work" aria-labelledby="work-title">
+        <div class="meta-column reveal"><p class="kicker">02 / Направления</p><p class="meta-note">Вместо витрины выдуманных кейсов — честная карта того, что я строю и изучаю.</p></div>
+        <div class="work-content"><h2 id="work-title" class="section-title reveal">Куда направлен<br /><em>взгляд.</em></h2><div class="work-list reveal reveal-delay">
+          <article class="work-item"><div class="work-index">01</div><div><h3>Интерфейсы, которые держат внимание</h3><p>Иерархия, состояния и движение работают вместе, чтобы человеку было легко понять, что происходит.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
+          <article class="work-item"><div class="work-index">02</div><div><h3>Системы, которые могут расти</h3><p>Гибкие основы для цифровых продуктов — без визуального шума и архитектуры, которую придётся выбросить.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
+          <article class="work-item"><div class="work-index">03</div><div><h3>Эксперименты с ясной причиной</h3><p>Небольшие прототипы и страницы, которые проверяют идею, а не заполняют пустое место.</p></div><span class="work-arrow" aria-hidden="true">↗</span></article>
+        </div></div>
       </section>
 
-      <section class="section shell about-section" id="about" aria-labelledby="about-title">
-        <div class="about-label reveal"><p class="eyebrow">О создателе</p><span class="about-line" aria-hidden="true"></span></div>
-        <div class="about-copy reveal"><h2 id="about-title">Название — Virello.<br /><em>Работа — моя.</em></h2><p>Я Артём, независимый создатель, который собирает личное портфолио на пересечении дизайна и кода. Мне важны ясное мышление, спокойная уверенность и момент, когда полезная вещь начинает казаться неизбежной.</p><p>Virello — место, где эти идеи становятся видимыми, по одной продуманной странице за раз.</p></div>
-        <div class="about-meta reveal reveal-delay"><div><span class="meta-label">Где я</span><strong>Земля, онлайн</strong></div><div><span class="meta-label">Сейчас</span><strong>Создаю Virello</strong></div><div><span class="meta-label">Подход</span><strong>Дизайн × код</strong></div></div>
+      <section class="about container" id="about" aria-labelledby="about-title">
+        <div class="meta-column reveal"><p class="kicker">03 / Обо мне</p><span class="meta-rule" aria-hidden="true"></span></div>
+        <div class="about-content"><h2 id="about-title" class="section-title reveal">Название — Virello.<br /><em>Работа — моя.</em></h2><p class="about-lead reveal reveal-delay">Я Артём, независимый создатель на пересечении дизайна и кода. Мне важны ясное мышление, спокойная уверенность и момент, когда полезная вещь начинает казаться неизбежной.</p><div class="about-details reveal reveal-delay"><div><span>Сейчас</span><strong>Создаю Virello</strong></div><div><span>Подход</span><strong>Дизайн × код</strong></div><div><span>Где я</span><strong>Земля, онлайн</strong></div></div></div>
       </section>
 
-      <section class="contact-section" id="contact" aria-labelledby="contact-title">
-        <div class="shell contact-inner reveal"><p class="eyebrow">Есть хороший вопрос?</p><h2 id="contact-title">Давайте создадим<br /><em>что-то продуманное.</em></h2><a class="button button-light" href="https://github.com/orskiyghost-png" target="_blank" rel="noreferrer">Найти меня на GitHub <span aria-hidden="true">↗</span></a><p class="contact-note">Открыт к внимательным разговорам, экспериментам и работе с понятной причиной существовать.</p></div>
-      </section>
+      <section class="contact" id="contact" aria-labelledby="contact-title"><div class="container contact-inner reveal"><p class="kicker">04 / Контакты</p><h2 id="contact-title">Есть идея?<br /><em>Давайте разберёмся.</em></h2><div class="contact-bottom"><p>Открыт к внимательным разговорам, экспериментам и работе с понятной причиной существовать.</p><a class="button button-light" href="https://github.com/orskiyghost-png" target="_blank" rel="noreferrer">Открыть GitHub <span aria-hidden="true">↗</span></a></div></div></section>
     </main>
 
-    <footer class="site-footer shell"><span>© <span data-year>2026</span> Артём / Virello</span><span>Сделано осознанно</span><a href="#top">Наверх ↑</a></footer>
+    <footer class="footer container"><span>© <span data-year>2026</span> Артём / Virello</span><span>Сделано осознанно</span><a href="#top">Наверх ↑</a></footer>
     <script src="/js/main.js" defer></script>
   </body>
 </html>
