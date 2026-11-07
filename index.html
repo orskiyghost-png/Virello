@@ -27,8 +27,8 @@
       --accent: #c4e6d0;
       --accent-deep: #a8d4b8;
       --danger: #e7a7a7;
-      --radius-card: 24px;
-      --radius-control: 12px;
+      --radius-card: 16px;
+      --radius-control: 10px;
       --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
     }
@@ -43,10 +43,6 @@
       margin: 0;
       color: var(--text);
       background-color: var(--bg);
-      background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size: 72px 72px;
       font-family: var(--font);
       font-size: 15px;
       -webkit-font-smoothing: antialiased;
@@ -118,7 +114,7 @@
     .story-column {
       min-width: 0;
       max-width: 680px;
-      animation: enter-up .65s cubic-bezier(.2,.7,.2,1) both;
+      animation: enter-up .65s cubic-bezier(.22,1,.36,1) both;
     }
 
     .eyebrow {
@@ -211,8 +207,7 @@
       padding: 21px 22px 19px;
       border: 1px solid var(--line-strong);
       border-radius: 18px;
-      background: linear-gradient(145deg, rgba(27,32,30,.96), rgba(17,20,19,.98) 70%);
-      box-shadow: 0 22px 65px rgba(0,0,0,.18);
+      background: var(--surface-raised);
     }
 
     .preview-card::after {
@@ -222,7 +217,7 @@
       right: 30%;
       width: 1px;
       height: 100%;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,.07), transparent);
+      background: var(--line);
       pointer-events: none;
     }
 
@@ -362,7 +357,7 @@
     .auth-column {
       display: flex;
       justify-content: flex-end;
-      animation: enter-up .7s .08s cubic-bezier(.2,.7,.2,1) both;
+      animation: enter-up .7s .08s cubic-bezier(.22,1,.36,1) both;
     }
 
     .auth-card {
@@ -371,7 +366,7 @@
       border: 1px solid var(--line-strong);
       border-radius: var(--radius-card);
       background: rgba(17,20,20,.96);
-      box-shadow: 0 28px 90px rgba(0,0,0,.24);
+      box-shadow: none;
     }
 
     .auth-topline {
@@ -440,7 +435,7 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 500;
-      transition: color .2s ease, background .2s ease, box-shadow .2s ease;
+      transition: color .2s cubic-bezier(.22,1,.36,1), background .2s cubic-bezier(.22,1,.36,1), box-shadow .2s cubic-bezier(.22,1,.36,1);
     }
 
     .auth-tab:hover { color: var(--text); }
@@ -448,11 +443,11 @@
     .auth-tab[aria-pressed="true"] {
       color: var(--text);
       background: #202624;
-      box-shadow: inset 0 0 0 1px rgba(236,242,238,.07);
+      border: 1px solid rgba(236,242,238,.07);
     }
 
     .auth-form {
-      animation: form-in .24s ease both;
+      animation: form-in .24s cubic-bezier(.22,1,.36,1) both;
     }
 
     .field { margin-top: 17px; }
@@ -478,7 +473,7 @@
       color: var(--text);
       background: #0d1010;
       font-size: 13px;
-      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+      transition: border-color .18s cubic-bezier(.22,1,.36,1), background .18s cubic-bezier(.22,1,.36,1), box-shadow .18s cubic-bezier(.22,1,.36,1);
     }
 
     .field-input::placeholder { color: #59615b; opacity: 1; }
@@ -488,7 +483,7 @@
     .field-input:focus {
       border-color: rgba(196,230,208,.62);
       background: #101514;
-      box-shadow: 0 0 0 3px rgba(196,230,208,.075);
+      box-shadow: none;
     }
 
     .field-input.has-toggle { padding-right: 49px; }
@@ -507,7 +502,7 @@
       color: var(--text-muted);
       background: transparent;
       cursor: pointer;
-      transition: color .18s ease, background .18s ease;
+      transition: color .18s cubic-bezier(.22,1,.36,1), background .18s cubic-bezier(.22,1,.36,1);
     }
 
     .password-toggle:hover { color: var(--text); background: rgba(255,255,255,.05); }
@@ -528,7 +523,7 @@
       cursor: pointer;
       font-size: 11px;
       text-decoration: none;
-      transition: color .18s ease;
+      transition: color .18s cubic-bezier(.22,1,.36,1);
     }
 
     .text-link:hover { color: var(--accent); }
@@ -548,7 +543,7 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
-      transition: background .18s ease, border-color .18s ease, transform .18s ease;
+      transition: background .18s cubic-bezier(.22,1,.36,1), border-color .18s cubic-bezier(.22,1,.36,1), transform .18s cubic-bezier(.22,1,.36,1);
     }
 
     .primary-button:hover {
@@ -604,6 +599,8 @@
       text-align: center;
     }
 
+    .recovery-spacer { height: 24px; }
+
     .auth-bottom button { margin-left: 4px; }
 
     .consent {
@@ -636,7 +633,7 @@
       background: none;
       cursor: pointer;
       font-size: 11px;
-      transition: color .18s ease;
+      transition: color .18s cubic-bezier(.22,1,.36,1);
     }
 
     .recovery-back:hover { color: var(--accent); }
@@ -715,7 +712,6 @@
     }
 
     @media (max-width: 520px) {
-      body { background-size: 56px 56px; }
       .page { padding: 0 16px; }
       .topbar { min-height: 66px; }
       .brand-mark { width: 30px; height: 30px; }
@@ -788,7 +784,7 @@
     <main class="main-grid" id="top">
       <section class="story-column" aria-labelledby="main-title">
         <p class="eyebrow">Инструмент для самостоятельной учёбы</p>
-        <h1 id="main-title">Сложное становится <span class="accent-word">понятным</span></h1>
+        <h1 id="main-title">Разбирай тему до <span class="accent-word">уверенного ответа</span></h1>
         <p class="intro-copy">Разбирай темы, готовь учебные работы и проверяй свои идеи. Virello помогает учиться осмысленно — от первого вопроса до уверенного ответа.</p>
 
         <ul class="use-cases" aria-label="Возможности Virello">
@@ -847,7 +843,7 @@
         <div class="auth-card">
           <div class="auth-topline">
             <span class="auth-context"><span class="context-mark"></span> Личный кабинет</span>
-            <span class="auth-step">V / 01</span>
+            <span class="auth-step">УЧЁБА / 01</span>
           </div>
 
           <div id="auth-view">
@@ -949,7 +945,7 @@
                 <label class="field-label" for="recovery-email">Электронная почта</label>
                 <input class="field-input" id="recovery-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" autocapitalize="off" spellcheck="false" required>
               </div>
-              <div style="height: 22px"></div>
+              <div class="recovery-spacer" aria-hidden="true"></div>
               <button class="primary-button" type="submit">
                 <span>Продолжить</span>
                 <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
