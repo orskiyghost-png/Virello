@@ -1,17 +1,20 @@
+const root = document.documentElement;
 const menuToggle = document.querySelector('[data-menu-toggle]');
 const siteNav = document.querySelector('[data-site-nav]');
 const header = document.querySelector('[data-header]');
 
-if (menuToggle && siteNav) {
+root.classList.add('js');
+
+if (menuToggle && siteNav && header) {
   const closeMenu = () => {
     menuToggle.setAttribute('aria-expanded', 'false');
-    siteNav.classList.remove('is-open');
+    header.classList.remove('menu-open');
   };
 
   menuToggle.addEventListener('click', () => {
     const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
     menuToggle.setAttribute('aria-expanded', String(!isOpen));
-    siteNav.classList.toggle('is-open', !isOpen);
+    header.classList.toggle('menu-open', !isOpen);
   });
 
   siteNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
