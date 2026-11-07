@@ -1,1072 +1,140 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b0d0d">
-  <meta name="description" content="Virello — интеллектуальное пространство для учёбы">
-  <title>Virello — пространство для учёбы</title>
-  <!-- Design direction informed by heydamir/unslop (CC BY 4.0): https://github.com/heydamir/unslop -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0b0d0d;
-      --surface: #111414;
-      --surface-raised: #171b1a;
-      --surface-soft: #1c2120;
-      --line: rgba(236, 242, 238, .10);
-      --line-strong: rgba(236, 242, 238, .16);
-      --text: #f1f3f0;
-      --text-soft: #a4aaa5;
-      --text-muted: #6f7771;
-      --accent: #c4e6d0;
-      --accent-deep: #a8d4b8;
-      --danger: #e7a7a7;
-      --radius-card: 16px;
-      --radius-control: 10px;
-      --font: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { min-width: 320px; background: var(--bg); }
-
-    body {
-      min-width: 320px;
-      min-height: 100vh;
-      margin: 0;
-      color: var(--text);
-      background-color: var(--bg);
-      font-family: var(--font);
-      font-size: 15px;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    button, input { font: inherit; }
-    button { -webkit-tap-highlight-color: transparent; }
-    a { color: inherit; }
-    [hidden] { display: none !important; }
-
-    .page {
-      width: min(100%, 1600px);
-      min-height: 100svh;
-      margin: 0 auto;
-      padding: 0 clamp(22px, 5.2vw, 84px);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .topbar {
-      min-height: 88px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-      text-decoration: none;
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      display: block;
-      flex: 0 0 auto;
-    }
-
-    .brand-name {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: .075em;
-    }
-
-    .topbar-note {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-muted);
-      font-size: 12px;
-      letter-spacing: .01em;
-    }
-
-    .topbar-note svg { color: var(--accent); }
-
-    .main-grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.12fr) minmax(390px, .88fr);
-      align-items: center;
-      gap: clamp(54px, 8vw, 132px);
-      padding: clamp(56px, 7.4vh, 88px) 0 clamp(48px, 6vh, 72px);
-    }
-
-    .story-column {
-      min-width: 0;
-      max-width: 680px;
-      animation: enter-up .65s cubic-bezier(.22,1,.36,1) both;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 25px;
-      color: var(--text-soft);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .025em;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 22px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    h1 {
-      max-width: 690px;
-      margin: 0;
-      font-size: clamp(48px, 5.25vw, 76px);
-      line-height: .99;
-      font-weight: 500;
-      letter-spacing: -.065em;
-    }
-
-    h1 .accent-word {
-      color: var(--accent);
-      white-space: nowrap;
-    }
-
-    .intro-copy {
-      max-width: 470px;
-      margin: 25px 0 0;
-      color: var(--text-soft);
-      font-size: 16px;
-      line-height: 1.75;
-      letter-spacing: -.012em;
-    }
-
-    .use-cases {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 9px 15px;
-      margin: 26px 0 0;
-      padding: 0;
-      list-style: none;
-      color: #c0c6c1;
-      font-size: 12px;
-    }
-
-    .use-cases li { display: inline-flex; align-items: center; gap: 8px; }
-    .use-cases li::before {
-      content: "";
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent-deep);
-    }
-
-    .preview-wrap {
-      position: relative;
-      margin-top: clamp(38px, 5.2vh, 58px);
-      max-width: 650px;
-    }
-
-    .preview-caption {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin: 0 3px 12px;
-      color: var(--text-muted);
-      font-size: 11px;
-    }
-
-    .preview-caption span:last-child {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .035em;
-    }
-
-    .preview-card {
-      position: relative;
-      overflow: hidden;
-      padding: 21px 22px 19px;
-      border: 1px solid var(--line-strong);
-      border-radius: 18px;
-      background: var(--surface-raised);
-    }
-
-    .preview-card::after {
-      content: "";
-      position: absolute;
-      top: -1px;
-      right: 30%;
-      width: 1px;
-      height: 100%;
-      background: var(--line);
-      pointer-events: none;
-    }
-
-    .preview-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding-bottom: 17px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .preview-product {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: #dce2dd;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .preview-product svg { color: var(--accent); }
-
-    .preview-context {
-      color: var(--text-muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      white-space: nowrap;
-    }
-
-    .preview-content {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 150px;
-      gap: 25px;
-      align-items: center;
-      padding: 21px 0 18px;
-    }
-
-    .preview-kicker {
-      margin: 0 0 8px;
-      color: var(--text-muted);
-      font-size: 11px;
-    }
-
-    .preview-title {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.2;
-      font-weight: 500;
-      letter-spacing: -.04em;
-    }
-
-    .preview-description {
-      max-width: 340px;
-      margin: 8px 0 0;
-      color: var(--text-soft);
-      font-size: 11px;
-      line-height: 1.6;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 9px;
-      margin-top: 19px;
-    }
-
-    .step {
-      min-width: 0;
-      padding-top: 10px;
-      border-top: 1px solid var(--line-strong);
-    }
-
-    .step-number {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: 9px;
-    }
-
-    .step-label {
-      display: block;
-      overflow: hidden;
-      color: #c3c9c4;
-      font-size: 10px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .formula-card {
-      min-height: 132px;
-      padding: 15px 13px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid rgba(196,230,208,.18);
-      border-radius: 13px;
-      background: rgba(196,230,208,.055);
-    }
-
-    .formula-label {
-      color: #aeb8b1;
-      font-size: 10px;
-    }
-
-    .formula {
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: 19px;
-      letter-spacing: -.06em;
-      white-space: nowrap;
-    }
-
-    .formula-note {
-      color: var(--text-muted);
-      font-size: 9px;
-      line-height: 1.45;
-    }
-
-    .preview-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-top: 13px;
-      border-top: 1px solid var(--line);
-      color: var(--text-muted);
-      font-size: 10px;
-    }
-
-    .preview-foot strong {
-      color: #cbd2cc;
-      font-weight: 500;
-    }
-
-    .auth-column {
-      display: flex;
-      justify-content: flex-end;
-      animation: enter-up .7s .08s cubic-bezier(.22,1,.36,1) both;
-    }
-
-    .auth-card {
-      width: min(100%, 454px);
-      padding: clamp(25px, 3vw, 35px);
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius-card);
-      background: rgba(17,20,20,.96);
-      box-shadow: none;
-    }
-
-    .auth-topline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 27px;
-    }
-
-    .auth-context {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-size: 11px;
-    }
-
-    .context-mark {
-      width: 7px;
-      height: 7px;
-      border: 1px solid var(--accent);
-      border-radius: 50%;
-      background: rgba(196,230,208,.24);
-    }
-
-    .auth-step {
-      color: #657069;
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-
-    .auth-title {
-      margin: 0;
-      font-size: 29px;
-      line-height: 1.18;
-      font-weight: 500;
-      letter-spacing: -.045em;
-    }
-
-    .auth-description {
-      margin: 9px 0 0;
-      color: var(--text-muted);
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .auth-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-      margin: 27px 0 24px;
-      padding: 4px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #0d1010;
-    }
-
-    .auth-tab {
-      min-height: 40px;
-      padding: 8px 12px;
-      border: 0;
-      border-radius: 9px;
-      color: var(--text-muted);
-      background: transparent;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      transition: color .2s cubic-bezier(.22,1,.36,1), background .2s cubic-bezier(.22,1,.36,1), box-shadow .2s cubic-bezier(.22,1,.36,1);
-    }
-
-    .auth-tab:hover { color: var(--text); }
-
-    .auth-tab[aria-pressed="true"] {
-      color: var(--text);
-      background: #202624;
-      border: 1px solid rgba(236,242,238,.07);
-    }
-
-    .auth-form {
-      animation: form-in .24s cubic-bezier(.22,1,.36,1) both;
-    }
-
-    .field { margin-top: 17px; }
-    .field:first-child { margin-top: 0; }
-
-    .field-label {
-      display: block;
-      margin: 0 0 8px;
-      color: #c4cbc5;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .input-wrap { position: relative; }
-
-    .field-input {
-      width: 100%;
-      height: 49px;
-      padding: 0 14px;
-      outline: none;
-      border: 1px solid rgba(236,242,238,.12);
-      border-radius: var(--radius-control);
-      color: var(--text);
-      background: #0d1010;
-      font-size: 13px;
-      transition: border-color .18s cubic-bezier(.22,1,.36,1), background .18s cubic-bezier(.22,1,.36,1), box-shadow .18s cubic-bezier(.22,1,.36,1);
-    }
-
-    .field-input::placeholder { color: #59615b; opacity: 1; }
-
-    .field-input:hover { border-color: rgba(236,242,238,.2); }
-
-    .field-input:focus {
-      border-color: rgba(196,230,208,.62);
-      background: #101514;
-      box-shadow: none;
-    }
-
-    .field-input.has-toggle { padding-right: 49px; }
-
-    .password-toggle {
-      position: absolute;
-      top: 50%;
-      right: 11px;
-      width: 30px;
-      height: 30px;
-      display: grid;
-      place-items: center;
-      transform: translateY(-50%);
-      border: 0;
-      border-radius: 8px;
-      color: var(--text-muted);
-      background: transparent;
-      cursor: pointer;
-      transition: color .18s cubic-bezier(.22,1,.36,1), background .18s cubic-bezier(.22,1,.36,1);
-    }
-
-    .password-toggle:hover { color: var(--text); background: rgba(255,255,255,.05); }
-    .password-toggle svg { width: 16px; height: 16px; }
-
-    .form-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin: 12px 0 21px;
-    }
-
-    .text-link {
-      padding: 0;
-      border: 0;
-      color: #b9cfc0;
-      background: none;
-      cursor: pointer;
-      font-size: 11px;
-      text-decoration: none;
-      transition: color .18s cubic-bezier(.22,1,.36,1);
-    }
-
-    .text-link:hover { color: var(--accent); }
-
-    .primary-button {
-      width: 100%;
-      min-height: 51px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0 18px;
-      border: 1px solid var(--accent);
-      border-radius: 12px;
-      color: #111714;
-      background: var(--accent);
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      transition: background .18s cubic-bezier(.22,1,.36,1), border-color .18s cubic-bezier(.22,1,.36,1), transform .18s cubic-bezier(.22,1,.36,1);
-    }
-
-    .primary-button:hover {
-      border-color: #d5f0df;
-      background: #d5f0df;
-      transform: translateY(-1px);
-    }
-
-    .primary-button:active { transform: translateY(0); }
-    .primary-button svg { width: 16px; height: 16px; }
-
-    .button-note {
-      margin: 13px 0 0;
-      color: var(--text-muted);
-      font-size: 10px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    .form-status {
-      min-height: 0;
-      margin: 0;
-      color: var(--accent);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .form-status:not(:empty) {
-      margin-top: 14px;
-      padding: 10px 12px;
-      border: 1px solid rgba(196,230,208,.17);
-      border-radius: 10px;
-      background: rgba(196,230,208,.055);
-    }
-
-    .form-status.is-error {
-      color: var(--danger);
-      border-color: rgba(231,167,167,.2);
-      background: rgba(231,167,167,.055);
-    }
-
-    .auth-divider {
-      height: 1px;
-      margin: 23px 0 18px;
-      background: var(--line);
-    }
-
-    .auth-bottom {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 11px;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .recovery-spacer { height: 24px; }
-
-    .auth-bottom button { margin-left: 4px; }
-
-    .consent {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      margin: 17px 0 20px;
-      color: var(--text-muted);
-      font-size: 10px;
-      line-height: 1.5;
-      cursor: pointer;
-    }
-
-    .consent input {
-      width: 14px;
-      height: 14px;
-      flex: 0 0 auto;
-      margin: 1px 0 0;
-      accent-color: var(--accent-deep);
-    }
-
-    .recovery-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin: 0 0 23px;
-      padding: 0;
-      border: 0;
-      color: var(--text-soft);
-      background: none;
-      cursor: pointer;
-      font-size: 11px;
-      transition: color .18s cubic-bezier(.22,1,.36,1);
-    }
-
-    .recovery-back:hover { color: var(--accent); }
-    .recovery-back svg { width: 14px; height: 14px; }
-    .recovery-copy { margin-bottom: 24px; }
-
-    .page-footer {
-      min-height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      border-top: 1px solid var(--line);
-      color: #626a64;
-      font-size: 10px;
-    }
-
-    .footer-right {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 9px;
-    }
-
-    .footer-mark {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--accent-deep);
-    }
-
-    button:focus-visible, a:focus-visible, input:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-    }
-
-    @keyframes enter-up {
-      from { opacity: 0; transform: translateY(13px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes form-in {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 1050px) {
-      .main-grid {
-        grid-template-columns: minmax(0, 1fr) minmax(360px, .9fr);
-        gap: 44px;
-      }
-      h1 { font-size: clamp(46px, 5.3vw, 62px); }
-      .preview-content { grid-template-columns: minmax(0, 1fr) 130px; gap: 15px; }
-      .formula { font-size: 17px; }
-    }
-
-    @media (max-width: 820px) {
-      .page { padding: 0 22px; }
-      .topbar { min-height: 72px; }
-      .main-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 43px;
-        padding: 33px 0 46px;
-      }
-      .auth-column { order: 0; justify-content: center; }
-      .story-column { order: 1; max-width: 560px; }
-      .auth-card { width: min(100%, 500px); }
-      .story-column .eyebrow { margin-bottom: 17px; }
-      h1 { max-width: 590px; font-size: clamp(43px, 8vw, 62px); }
-      .intro-copy { margin-top: 17px; font-size: 14px; }
-      .use-cases { margin-top: 19px; }
-      .preview-wrap { margin-top: 27px; }
-    }
-
-    @media (max-width: 520px) {
-      .page { padding: 0 16px; }
-      .topbar { min-height: 66px; }
-      .brand-mark { width: 30px; height: 30px; }
-      .brand-name { font-size: 15px; }
-      .topbar-note { gap: 7px; font-size: 10px; }
-      .topbar-note svg { width: 13px; height: 13px; }
-      .main-grid { gap: 38px; padding: 23px 0 35px; }
-      .auth-card { padding: 23px 20px 21px; border-radius: 20px; }
-      .auth-topline { margin-bottom: 22px; }
-      .auth-title { font-size: 26px; }
-      .auth-tabs { margin: 23px 0 21px; }
-      .field { margin-top: 15px; }
-      .field-input { height: 48px; }
-      .primary-button { min-height: 50px; }
-      h1 { font-size: clamp(39px, 11.3vw, 53px); }
-      .intro-copy { font-size: 13px; line-height: 1.65; }
-      .use-cases { gap: 9px 13px; font-size: 11px; }
-      .preview-card { padding: 16px 15px 15px; border-radius: 15px; }
-      .preview-head { padding-bottom: 13px; }
-      .preview-content { grid-template-columns: minmax(0,1fr) 112px; gap: 10px; padding: 16px 0 14px; }
-      .preview-title { font-size: 18px; }
-      .preview-description { font-size: 10px; }
-      .formula-card { min-height: 116px; padding: 12px 10px; }
-      .formula { font-size: 15px; }
-      .steps { gap: 6px; margin-top: 15px; }
-      .step-label { font-size: 9px; }
-      .preview-caption { font-size: 10px; }
-      .page-footer { min-height: 55px; font-size: 9px; }
-    }
-
-    @media (max-width: 365px) {
-      .topbar-note { display: none; }
-      .auth-card { padding-inline: 17px; }
-      .preview-context { display: none; }
-      .preview-content { grid-template-columns: minmax(0,1fr) 104px; }
-      .formula { font-size: 14px; }
-      .page-footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 5px; padding: 12px 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141415">
+<meta name="description" content="Virello — учебное пространство для работы с текстом, задачами и идеями">
+<!-- Design principles adapted from unslop by Damir Sokolovsky, CC BY 4.0: https://github.com/heydamir/unslop -->
+<title>Virello — учебное пространство</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#141415;--side:#101011;--panel:#19191b;--raised:#222224;--raised2:#29292b;--line:rgba(237,237,237,.085);--line2:rgba(237,237,237,.14);--text:#ededed;--secondary:#a1a1a6;--muted:#85858b;--accent:#d9ddbd;--accent-ink:#202117;--good:#7fb79a;--bad:#d78d86;--sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--serif:'Newsreader',Georgia,serif;--ease:cubic-bezier(.22,1,.36,1);--sidebar:248px}
+*{box-sizing:border-box}html,body{margin:0;min-width:320px;min-height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}body{min-height:100svh}button,input,textarea,select{font:inherit}button{color:inherit;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}[hidden]{display:none!important}svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}.muted{color:var(--muted)}.secondary{color:var(--secondary)}.mono{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+/* Auth */
+.auth-screen{min-height:100svh;display:grid;place-items:center;padding:36px 20px 52px}.auth-box{width:min(100%,380px);animation:enter .35s var(--ease) both}.wordmark{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:54px}.brand-mark{width:22px;height:22px;border:1px solid rgba(237,237,237,.65);border-radius:6px;position:relative}.brand-mark:before{content:'';position:absolute;width:7px;height:7px;left:6px;top:6px;border:1px solid var(--accent);border-radius:2px}.brand-name{font-size:17px;font-weight:600;letter-spacing:.01em}.auth-title{margin:0;text-align:center;font-family:var(--serif);font-size:39px;font-weight:400;line-height:1.08;letter-spacing:-.025em}.auth-sub{margin:11px 0 30px;text-align:center;color:var(--secondary);line-height:1.55}.form{display:grid;gap:16px}.field{display:grid;gap:7px}.label{font-size:12px;color:var(--secondary)}.input-wrap{position:relative}.input{width:100%;height:48px;padding:0 13px;border:1px solid var(--line2);border-radius:8px;background:var(--panel);color:var(--text);outline:none;transition:border-color .15s,background .15s}.input::placeholder,textarea::placeholder{color:#69696e}.input:focus{border-color:rgba(217,221,189,.55);background:var(--raised)}.input.password{padding-right:48px}.show-pass{position:absolute;right:5px;top:5px;width:38px;height:38px;border:0;border-radius:6px;background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer}.show-pass:hover{background:var(--raised2);color:var(--text)}.auth-row{display:flex;justify-content:flex-end;margin-top:-4px}.text-button{border:0;padding:0;background:none;color:var(--secondary);font-size:12px;cursor:pointer}.text-button:hover{color:var(--accent)}.primary{min-height:46px;padding:0 18px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;transition:background .15s,transform .15s}.primary:hover{background:#e7e9d2}.primary:active{transform:scale(.985)}.secondary-button{min-height:42px;padding:0 15px;border:1px solid var(--line2);border-radius:8px;background:var(--raised);color:var(--text);cursor:pointer;transition:background .15s,border-color .15s}.secondary-button:hover{background:var(--raised2);border-color:var(--line2)}.auth-submit{width:100%;margin-top:4px}.auth-switch{text-align:center;margin:23px 0 0;color:var(--muted);font-size:12px}.auth-switch button{margin-left:5px;color:var(--text)}.auth-note{margin:22px 0 0;text-align:center;color:#68686d;font-size:11px;line-height:1.5}.form-message{min-height:16px;margin:0;color:var(--secondary);font-size:12px;line-height:1.4}.form-message.error{color:var(--bad)}.form-message.ok{color:var(--good)}.consent{display:flex;gap:9px;align-items:flex-start;color:var(--secondary);font-size:12px;line-height:1.45}.consent input{margin:2px 0 0;accent-color:var(--accent)}
+/* App shell */
+.app{min-height:100svh;display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr)}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:22px 14px 14px;z-index:20}.side-brand{display:flex;align-items:center;gap:10px;padding:0 10px 26px}.side-brand .brand-mark{width:20px;height:20px}.side-brand .brand-name{font-size:16px}.side-section{margin:18px 10px 8px;color:var(--muted);font-size:11px}.nav-list{display:grid;gap:3px}.nav-item{width:100%;height:38px;padding:0 10px;display:flex;align-items:center;gap:10px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--secondary);text-align:left;cursor:pointer}.nav-item svg{width:17px;height:17px}.nav-item:hover{background:rgba(255,255,255,.035);color:var(--text)}.nav-item.active{background:#222224;border-color:rgba(255,255,255,.055);color:var(--text)}.nav-item.active svg{color:var(--accent)}.chat-history{display:grid;gap:2px;overflow:auto;max-height:42vh}.history-item{height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:var(--muted);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-size:12px}.history-item:hover,.history-item.selected{background:rgba(255,255,255,.04);color:var(--text)}.side-bottom{margin-top:auto}.balance-mini{margin:12px 2px;padding:13px;border:1px solid var(--line);border-radius:9px;background:#171718}.balance-mini .small{color:var(--muted);font-size:11px}.balance-value{margin-top:5px;font-size:19px;font-weight:500;font-variant-numeric:tabular-nums}.balance-mini button{width:100%;height:32px;margin-top:11px;border:1px solid var(--line2);border-radius:6px;background:var(--raised);font-size:12px;cursor:pointer}.profile-trigger{display:flex;align-items:center;gap:10px;width:100%;padding:11px 8px 4px;border:0;border-top:1px solid var(--line);background:none;text-align:left;cursor:pointer}.avatar{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#34352e;color:#e1e2d2;font-size:11px}.profile-copy{min-width:0;display:grid;gap:2px}.profile-copy strong{font-size:12px;font-weight:500}.profile-copy span{font-size:11px;color:var(--muted)}.profile-trigger>svg{margin-left:auto;width:15px;color:var(--muted)}.main{grid-column:2;min-width:0;min-height:100svh;display:flex;flex-direction:column}.topbar{height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--line)}.topbar-left{display:flex;align-items:center;gap:10px;color:var(--secondary);font-size:12px}.crumb{color:var(--text)}.topbar-right{display:flex;align-items:center;gap:12px}.icon-button{width:34px;height:34px;display:grid;place-items:center;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--secondary);cursor:pointer}.icon-button:hover{border-color:var(--line);background:var(--panel);color:var(--text)}.top-balance{font-size:12px;color:var(--secondary);font-variant-numeric:tabular-nums}.mobile-brand{display:none}.content{width:100%;max-width:1280px;margin:0 auto;padding:32px 34px 60px}.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:27px}.page-title{margin:0;font-family:var(--serif);font-size:34px;line-height:1.1;font-weight:400;letter-spacing:-.02em}.page-description{margin:8px 0 0;color:var(--secondary);font-size:13px;line-height:1.5}.eyebrow{margin-bottom:10px;color:var(--muted);font-size:11px}.section-title{margin:0 0 14px;font-size:14px;font-weight:500}.settings-layout{display:grid;grid-template-columns:190px minmax(0,680px);gap:36px}.settings-nav{display:grid;align-content:start;gap:3px}.settings-nav button{height:36px;padding:0 10px;border:0;border-radius:6px;background:none;color:var(--secondary);text-align:left;cursor:pointer}.settings-nav button.active,.settings-nav button:hover{background:var(--raised);color:var(--text)}.settings-panel{min-width:0}.panel{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.panel+.panel{margin-top:14px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.panel-head h3{margin:0;font-size:14px;font-weight:500}.panel-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.setting-row{min-height:55px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line)}.setting-row:first-of-type{border-top:0}.setting-row strong{display:block;font-size:13px;font-weight:400}.setting-row small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.setting-value{color:var(--secondary);font-size:12px}.select{height:36px;max-width:190px;padding:0 30px 0 10px;border:1px solid var(--line2);border-radius:7px;background:var(--raised);color:var(--text)}.toggle{width:38px;height:22px;position:relative;border:1px solid var(--line2);border-radius:12px;background:#343438;cursor:pointer;transition:background .16s}.toggle:after{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#aaa;transition:transform .16s}.toggle.on{background:#74785f}.toggle.on:after{transform:translateX(16px);background:#f1f1e6}
+/* Chat / 
+.chat-area{flex:1;min-height:0;display:flex;flex-direction:column}.chat-scroll{width:100%;max-width:850px;margin:0 auto;padding:36px 30px 20px;flex:1;overflow:auto}.chat-intro{min-height:42vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px 0}.intro-mark{width:38px;height:38px;margin-bottom:22px;border:1px solid var(--line2);border-radius:11px;display:grid;place-items:center;color:var(--accent)}.intro-mark svg{width:20px;height:20px}.chat-intro h1{margin:0;font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:-.025em}.chat-intro p{max-width:390px;margin:12px 0 0;color:var(--secondary);font-size:13px;line-height:1.6}.suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:27px}.suggestion{padding:9px 12px;border:1px solid var(--line2);border-radius:7px;background:transparent;color:var(--secondary);font-size:12px;cursor:pointer}.suggestion:hover{background:var(--panel);color:var(--text);border-color:rgba(217,221,189,.35)}.composer-wrap{width:100%;max-width:850px;margin:0 auto;padding:12px 30px 20px}.composer{padding:12px 13px 9px;border:1px solid var(--line2);border-radius:12px;background:var(--panel);transition:border-color .15s}.composer:focus-within{border-color:rgba(217,221,189,.42)}.composer textarea{width:100%;min-height:56px;max-height:180px;resize:vertical;padding:5px 3px;border:0;background:transparent;color:var(--text);outline:none;line-height:1.55}.composer-tools{display:flex;align-items:center;justify-content:space-between;gap:12px}.tool-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.tool-button{height:32px;padding:0 9px;display:flex;align-items:center;gap:7px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--muted);font-size:11px;cursor:pointer}.tool-button svg{width:15px;height:15px}.tool-button:hover,.tool-button.active{background:var(--raised);color:var(--text)}.tool-button.active{border-color:var(--line2)}.send-button{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:7px;background:var(--accent);color:var(--accent-ink);cursor:pointer}.send-button:disabled{opacity:.35;cursor:not-allowed}.send-button svg{width:17px;height:17px}.composer-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px;color:var(--muted);font-size:10px}.model-foot{color:var(--secondary)}.message-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:13px;margin:0 0 27px;animation:enter .22s var(--ease) both}.message-avatar{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:8px;color:var(--accent);font-size:11px}.message-avatar.user{background:#292a27;color:var(--text)}.message-body{min-width:0;padding-top:3px}.message-author{margin-bottom:8px;color:var(--secondary);font-size:11px}.message-text{color:var(--text);font-size:14px;line-height:1.75;overflow-wrap:anywhere}.message-text p{margin:0 0 10px}.message-actions{display:flex;gap:12px;margin-top:11px}.tiny-action{padding:0;border:0;background:none;color:var(--muted);font-size:10px;cursor:pointer}.tiny-action:hover{color:var(--text)}.typing{display:flex;gap:4px;padding:8px 0}.typing span{width:5px;height:5px;border-radius:50%;background:var(--secondary);animation:typing 1s infinite}.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}.file-chip{display:inline-flex;align-items:center;gap:7px;margin:0 6px 8px 0;padding:6px 8px;border:1px solid var(--line2);border-radius:6px;color:var(--secondary);font-size:11px}.file-chip button{border:0;background:none;color:var(--muted);cursor:pointer} 
+/ Modals and onboarding / 
+.overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.62);backdrop-filter:blur(5px)}.modal{width:min(100%,480px);max-height:min(88svh,760px);overflow:auto;padding:24px;border:1px solid var(--line2);border-radius:14px;background:#1a1a1c;box-shadow:0 24px 80px rgba(0,0,0,.35);animation:enter .2s var(--ease) both}.modal.wide{width:min(100%,600px)}.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}.modal-head h2{margin:0;font-family:var(--serif);font-size:27px;font-weight:400}.modal-head p{margin:6px 0 0;color:var(--secondary);font-size:12px;line-height:1.5}.close{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--secondary);font-size:19px;cursor:pointer}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice{min-height:54px;padding:11px 12px;border:1px solid var(--line2);border-radius:8px;background:var(--panel);color:var(--secondary);text-align:left;cursor:pointer}.choice strong{font-size:12px;font-weight:500}.choice:hover,.choice.selected{border-color:rgba(217,221,189,.55);background:#25261f;color:var(--text)}.modal-actions{display:flex;justify-content:space-between;gap:10px;margin-top:24px}.modal-actions button{min-width:105px}.step-count{margin-bottom:10px;color:var(--muted);font-size:11px}.progress-line{height:2px;margin-bottom:23px;background:#333336}.progress-line span{display:block;height:100%;background:var(--accent);transition:width .2s}.onboard-field{display:grid;gap:7px;margin-bottom:14px}.onboard-field label{color:var(--secondary);font-size:11px}.onboard-field input{height:42px;padding:0 11px;border:1px solid var(--line2);border-radius:7px;background:var(--raised);color:var(--text);outline:none}.onboard-field input:focus{border-color:var(--accent)}.model-list{display:grid;gap:7px}.model-option{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:left;cursor:pointer}.model-option:hover,.model-option.selected{border-color:rgba(217,221,189,.5);background:#24251f}.model-option strong{display:block;font-size:13px;font-weight:500}.model-option small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.model-option em{color:var(--secondary);font-size:11px;font-style:normal;white-space:nowrap}.radio-mark{width:15px;height:15px;border:1px solid var(--muted);border-radius:50%;position:relative}.model-option.selected .radio-mark{border-color:var(--accent)}.model-option.selected .radio-mark:after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--accent)} 
+/ Billing / admin / 
+.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}.stat{padding:17px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.stat span{display:block;color:var(--muted);font-size:11px}.stat strong{display:block;margin-top:9px;font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}.data-table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}.data-table th,.data-table td{padding:13px 15px;border-bottom:1px solid var(--line);font-size:12px}.data-table th{color:var(--muted);font-weight:400}.data-table td{color:var(--secondary)}.data-table tr:last-child td{border-bottom:0}.data-table td:first-child{color:var(--text)}.status{display:inline-flex;align-items:center;gap:6px;color:var(--good);font-size:11px}.status:before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}.provider-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.provider{padding:16px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.provider h4{margin:0 0 12px;font-size:13px;font-weight:500}.provider label{display:block;margin-bottom:6px;color:var(--muted);font-size:11px}.provider select{width:100%;height:38px;padding:0 10px;border:1px solid var(--line2);border-radius:7px;background:var(--raised);color:var(--text)}.empty-note{padding:25px;border:1px dashed var(--line2);border-radius:9px;color:var(--muted);font-size:12px;text-align:center}.toast{position:fixed;left:50%;bottom:25px;z-index:100;max-width:calc(100vw - 30px);padding:11px 15px;border:1px solid var(--line2);border-radius:8px;background:#252527;color:var(--text);font-size:12px;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:opacity .18s,transform .18s}.toast.show{opacity:1;transform:translate(-50%,0)}.mobile-nav{display:none} 
+@keyframes enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@keyframes typing{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}} 
+@media(max-width:900px){:root{--sidebar:218px}.content{padding:26px 24px}.topbar{padding:0 24px}.settings-layout{grid-template-columns:155px minmax(0,1fr);gap:22px}} 
+@media(max-width:680px){.app{display:block}.sidebar{display:none}.main{min-height:100svh;padding-bottom:62px}.topbar{height:54px;padding:0 17px}.mobile-brand{display:flex;align-items:center;gap:8px;color:var(--text);font-size:13px;font-weight:600}.mobile-brand .brand-mark{width:18px;height:18px}.topbar-left{display:none}.topbar-right{gap:5px}.content{padding:24px 17px 35px}.page-title{font-size:30px}.page-head{align-items:flex-start;flex-direction:column;gap:14px}.settings-layout{display:block}.settings-nav{display:flex;overflow:auto;margin-bottom:17px}.settings-nav button{white-space:nowrap}.panel{padding:16px}.chat-scroll{padding:23px 17px 12px}.chat-intro{min-height:38vh}.chat-intro h1{font-size:31px}.chat-intro p{font-size:12px}.suggestions{gap:6px;margin-top:20px}.suggestion{font-size:11px;padding:8px 10px}.composer-wrap{padding:8px 12px 13px}.composer{padding:10px}.composer textarea{min-height:54px}.tool-button{padding:0 7px;font-size:10px}.composer-foot{font-size:9px}.mobile-nav{position:fixed;inset:auto 0 0;z-index:30;height:62px;padding:5px 9px max(5px,env(safe-area-inset-bottom));display:flex;justify-content:space-around;border-top:1px solid var(--line);background:rgba(16,16,17,.96);backdrop-filter:blur(14px)}.mobile-nav button{min-width:55px;display:grid;justify-items:center;align-content:center;gap:3px;border:0;background:none;color:var(--muted);font-size:9px}.mobile-nav button svg{width:18px;height:18px}.mobile-nav button.active{color:var(--accent)}.stat-grid{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.provider-grid{grid-template-columns:1fr}.modal{padding:19px}.message-row{grid-template-columns:26px minmax(0,1fr);gap:10px}.message-avatar{width:25px;height:25px}.choice-grid{grid-template-columns:1fr 1fr}} 
+@media(max-width:390px){.choice-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}.tool-button span{display:none}.tool-button{width:32px;justify-content:center}} 
+@media(prefers-reduced-motion:reduce){,:before,:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}} 
+</style>
 </head>
 <body>
-  <div class="page">
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="Virello — главная">
-        <svg class="brand-mark" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-          <path d="M5.5 7.5H12.2L18 23.7L23.8 7.5H30.5L20.8 29H15.2L5.5 7.5Z" stroke="#E9EEE9" stroke-width="1.35" stroke-linejoin="round"/>
-          <path d="M18 23.7L23.8 7.5" stroke="#C4E6D0" stroke-width="2.1" stroke-linecap="round"/>
-          <path d="M25.7 28.5H30.5" stroke="#C4E6D0" stroke-width="1.35" stroke-linecap="round"/>
-        </svg>
-        <span class="brand-name">VIRELLO</span>
-      </a>
-
-      <div class="topbar-note">
-        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M3.5 10.2L7.6 14.1L16.5 5.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Пространство для учёбы
+<div id="authScreen" class="auth-screen">
+  <section class="auth-box" aria-label="Авторизация Virello">
+    <div class="wordmark"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">virello</span></div>
+    <div id="authBack" hidden><button class="text-button" type="button" data-auth="login">← Назад ко входу</button></div>
+    <h1 class="auth-title" id="authTitle">Продолжить обучение</h1>
+    <p class="auth-sub" id="authSubtitle">Войдите, чтобы открыть своё учебное пространство</p>
+    <form class="form" id="authForm">
+      <div class="field" id="nameField" hidden><label class="label" for="authName">Как к вам обращаться</label><input class="input" id="authName" autocomplete="name" placeholder="Ваше имя"></div>
+      <div class="field"><label class="label" for="authEmail">Электронная почта</label><input class="input" id="authEmail" type="email" autocomplete="email" placeholder="name@example.com" required></div>
+      <div class="field" id="passwordField"><label class="label" for="authPassword">Пароль</label><div class="input-wrap"><input class="input password" id="authPassword" type="password" autocomplete="current-password" placeholder="Не менее 8 символов" required><button class="show-pass" id="showPass" type="button" aria-label="Показать пароль"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg></button></div></div>
+      <div class="field" id="confirmField" hidden><label class="label" for="authConfirm">Повторите пароль</label><input class="input" id="authConfirm" type="password" autocomplete="new-password" placeholder="Повторите пароль"></div>
+      <div class="auth-row" id="forgotRow"><button class="text-button" type="button" data-auth="forgot">Забыли пароль?</button></div>
+      <label class="consent" id="consentRow" hidden><input id="consentCheck" type="checkbox"> <span>Я принимаю условия использования и политику конфиденциальности</span></label>
+      <p class="form-message" id="authMessage" aria-live="polite"></p>
+      <button class="primary auth-submit" id="authSubmit" type="submit">Войти</button>
+    </form>
+    <p class="auth-switch" id="authSwitch">Нет аккаунта? <button class="text-button" type="button" data-auth="register">Создать аккаунт</button></p>
+    <p class="auth-note">Демо-режим интерфейса · реальные аккаунты подключаются через сервер</p>
+  </section>
+</div>
+<div id="appScreen" class="app" hidden>
+  <aside class="sidebar">
+    <div class="side-brand"><span class="brand-mark"></span><span class="brand-name">virello</span></div>
+    <div class="nav-list">
+      <button class="nav-item active" data-page="chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></svg>Новый диалог</button>
+      <button class="nav-item" data-page="history"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5m4-1v5l4 2"/></svg>История</button>
+      <button class="nav-item" data-page="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Профиль</button>
+      <button class="nav-item" data-page="settings"><svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 1.8Z"/></svg>Настройки</button>
+      <button class="nav-item" data-page="balance"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18m-5 5h2"/></svg>Баланс</button>
+    </div>
+    <div class="side-section">Недавние диалоги</div>
+    <div class="chat-history" id="historyList"><button class="history-item selected">Новый диалог</button></div>
+    <div class="side-bottom">
+      <div class="balance-mini"><div class="small">Доступный баланс</div><div class="balance-value mono" id="sideBalance">₽ 0,00</div><button data-page="balance">Пополнить баланс</button></div>
+      <button class="profile-trigger" data-page="profile"><span class="avatar" id="sideAvatar">П</span><span class="profile-copy"><strong id="sideName">Пользователь</strong><span id="sideEmail">Мой профиль</span></span><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div class="mobile-brand"><span class="brand-mark"></span>virello</div><div class="topbar-left"><span>Учебное пространство</span><span> / </span><span class="crumb" id="crumb">Новый диалог</span></div><div class="topbar-right"><span class="top-balance" id="topBalance">₽ 0,00</span><button class="icon-button" data-page="settings" aria-label="Настройки"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 3.1-.2-.1a1.7 1.7 0 0 0-1.8.2l-.1.1h-3.6l-.1-.2a1.7 1.7 0 0 0-1.5-1.1 1.7 1.7 0 0 0-1.2.4l-.2.1-3.1-1.8.1-.2a1.7 1.7 0 0 0-.2-1.8l-.1-.1v-3.6l.2-.1a1.7 1.7 0 0 0 .7-2.7l-.1-.2 1.8-3.1.2.1a1.7 1.7 0 0 0 1.8-.2l.1-.1h3.6l.1.2a1.7 1.7 0 0 0 2.7.7l.2-.1 3.1 1.8-.1.2a1.7 1.7 0 0 0 .2 1.8l.1.1v3.6Z"/></svg></button></div></header>
+    <section id="chatPage" class="chat-area">
+      <div class="chat-scroll" id="chatScroll"><div class="chat-intro" id="chatIntro"><div class="intro-mark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8m0-12.8L5.6 18.4"/></svg></div><h1>С чего начнём?</h1><p>Разберём сложную тему, подготовим учебную работу или найдём понятное объяснение. Опишите задачу своими словами.</p><div class="suggestions"><button class="suggestion" data-prompt="Объясни мне сложную тему простыми словами">Объяснить тему</button><button class="suggestion" data-prompt="Помоги составить план реферата">План реферата</button><button class="suggestion" data-prompt="Помоги решить задачу пошагово">Решить задачу</button><button class="suggestion" data-prompt="Подготовь меня к экзамену по теме">Подготовка к экзамену</button></div></div><div id="conversation"></div></div>
+      <div class="composer-wrap">
+        <div class="composer">
+          <div id="attachedFiles"></div>
+          <textarea id="promptInput" rows="2" placeholder="Напишите, с чем нужна помощь…"></textarea>
+          <div class="composer-tools"><div class="tool-group"><button class="tool-button" id="fileButton" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg><span>Файл</span></button><input id="fileInput" type="file" hidden multiple accept="image/*,.pdf,.doc,.docx,.txt"><button class="tool-button" id="searchButton" type="button"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg><span>Поиск</span></button><button class="tool-button" id="modelButton" type="button"><span id="modelLabel">Virello Standard</span><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></button><button class="tool-button" id="reasonButton" type="button"><span id="reasonLabel">Сбалансированно</span><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></button></div><button class="send-button" id="sendButton" type="button" disabled aria-label="Отправить"><svg viewBox="0 0 24 24"><path d="M12 19V5m-7 7 7-7 7 7"/></svg></button></div>
+        </div><div class="composer-foot"><span>Проверяйте важные факты и источники</span><span class="model-foot" id="modeFoot">Standard · базовая модель</span></div>
       </div>
-    </header>
-
-    <main class="main-grid" id="top">
-      <section class="story-column" aria-labelledby="main-title">
-        <p class="eyebrow">Инструмент для самостоятельной учёбы</p>
-        <h1 id="main-title">Разбирай тему до <span class="accent-word">уверенного ответа</span></h1>
-        <p class="intro-copy">Разбирай темы, готовь учебные работы и проверяй свои идеи. Virello помогает учиться осмысленно — от первого вопроса до уверенного ответа.</p>
-
-        <ul class="use-cases" aria-label="Возможности Virello">
-          <li>Разобраться в теме</li>
-          <li>Подготовить работу</li>
-          <li>Проверить себя</li>
-        </ul>
-
-        <div class="preview-wrap" aria-label="Пример учебного разбора">
-          <div class="preview-caption">
-            <span>Так будет выглядеть работа с Virello</span>
-            <span>ПРИМЕР · 01</span>
-          </div>
-
-          <div class="preview-card">
-            <div class="preview-head">
-              <div class="preview-product">
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M5 3.5H12.2L15.5 6.8V16.5H5V3.5Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
-                  <path d="M12 3.8V7H15.2M7.8 10H12.7M7.8 12.8H12.7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                </svg>
-                <span>Разбор темы</span>
-              </div>
-              <span class="preview-context">ФИЗИКА / 9 КЛАСС</span>
-            </div>
-
-            <div class="preview-content">
-              <div>
-                <p class="preview-kicker">Тема занятия</p>
-                <h2 class="preview-title">Закон Ома</h2>
-                <p class="preview-description">Понятное объяснение, формула и пример решения задачи без лишней теории</p>
-
-                <div class="steps" aria-label="План разбора">
-                  <div class="step"><span class="step-number">01</span><span class="step-label">Суть закона</span></div>
-                  <div class="step"><span class="step-number">02</span><span class="step-label">Формула</span></div>
-                  <div class="step"><span class="step-number">03</span><span class="step-label">Пример</span></div>
-                </div>
-              </div>
-
-              <div class="formula-card">
-                <span class="formula-label">Главная формула</span>
-                <strong class="formula">U = I × R</strong>
-                <span class="formula-note">Напряжение = ток × сопротивление</span>
-              </div>
-            </div>
-
-            <div class="preview-foot">
-              <span>Материал адаптируется под твой уровень</span>
-              <strong>По шагам</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="auth-column" aria-label="Вход и регистрация">
-        <div class="auth-card">
-          <div class="auth-topline">
-            <span class="auth-context"><span class="context-mark"></span> Личный кабинет</span>
-            <span class="auth-step">УЧЁБА / 01</span>
-          </div>
-
-          <div id="auth-view">
-            <h2 class="auth-title" id="auth-title">С возвращением</h2>
-            <p class="auth-description" id="auth-description">Войди, чтобы продолжить работу</p>
-
-            <div class="auth-tabs" role="group" aria-label="Тип доступа">
-              <button class="auth-tab" type="button" data-mode="login" aria-pressed="true">Войти</button>
-              <button class="auth-tab" type="button" data-mode="register" aria-pressed="false">Создать аккаунт</button>
-            </div>
-
-            <form class="auth-form" id="login-form" novalidate>
-              <div class="field">
-                <label class="field-label" for="login-email">Электронная почта</label>
-                <input class="field-input" id="login-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" autocapitalize="off" spellcheck="false" required>
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="login-password">Пароль</label>
-                <div class="input-wrap">
-                  <input class="field-input has-toggle" id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Твой пароль" required>
-                  <button class="password-toggle" type="button" data-toggle-password="login-password" aria-label="Показать пароль" aria-pressed="false">
-                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <path d="M2.1 10S4.9 5.1 10 5.1S17.9 10 17.9 10S15.1 14.9 10 14.9S2.1 10 2.1 10Z" stroke="currentColor" stroke-width="1.25"/>
-                      <circle cx="10" cy="10" r="2.1" stroke="currentColor" stroke-width="1.25"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <button class="text-link" type="button" id="open-recovery">Забыли пароль?</button>
-              </div>
-
-              <button class="primary-button" type="submit">
-                <span>Войти в аккаунт</span>
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M3.5 10H16M10.8 4.8L16 10L10.8 15.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <p class="button-note">Используй почту, к которой у тебя есть доступ</p>
-              <p class="form-status" id="login-status" aria-live="polite"></p>
-            </form>
-
-            <form class="auth-form" id="register-form" hidden novalidate>
-              <div class="field">
-                <label class="field-label" for="register-name">Как к тебе обращаться</label>
-                <input class="field-input" id="register-name" name="name" type="text" autocomplete="name" placeholder="Имя и фамилия" maxlength="80" required>
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="register-email">Электронная почта</label>
-                <input class="field-input" id="register-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" autocapitalize="off" spellcheck="false" required>
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="register-password">Придумай пароль</label>
-                <div class="input-wrap">
-                  <input class="field-input has-toggle" id="register-password" name="password" type="password" autocomplete="new-password" placeholder="Не менее 8 символов" minlength="8" required>
-                  <button class="password-toggle" type="button" data-toggle-password="register-password" aria-label="Показать пароль" aria-pressed="false">
-                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <path d="M2.1 10S4.9 5.1 10 5.1S17.9 10 17.9 10S15.1 14.9 10 14.9S2.1 10 2.1 10Z" stroke="currentColor" stroke-width="1.25"/>
-                      <circle cx="10" cy="10" r="2.1" stroke="currentColor" stroke-width="1.25"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <label class="consent" for="register-consent">
-                <input id="register-consent" name="consent" type="checkbox" required>
-                <span>Я принимаю условия использования и согласен на обработку данных для работы сервиса</span>
-              </label>
-
-              <button class="primary-button" type="submit">
-                <span>Создать аккаунт</span>
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M3.5 10H16M10.8 4.8L16 10L10.8 15.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <p class="button-note">После регистрации можно будет настроить учебный профиль</p>
-              <p class="form-status" id="register-status" aria-live="polite"></p>
-            </form>
-          </div>
-
-          <div id="recovery-view" hidden>
-            <button class="recovery-back" type="button" id="back-to-auth">
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M16.5 10H3.5M8.7 4.8L3.5 10L8.7 15.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Назад ко входу
-            </button>
-            <div class="recovery-copy">
-              <h2 class="auth-title">Восстановление доступа</h2>
-              <p class="auth-description">Укажи почту, с которой создавался аккаунт</p>
-            </div>
-
-            <form class="auth-form" id="recovery-form" novalidate>
-              <div class="field">
-                <label class="field-label" for="recovery-email">Электронная почта</label>
-                <input class="field-input" id="recovery-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" autocapitalize="off" spellcheck="false" required>
-              </div>
-              <div class="recovery-spacer" aria-hidden="true"></div>
-              <button class="primary-button" type="submit">
-                <span>Продолжить</span>
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M3.5 10H16M10.8 4.8L16 10L10.8 15.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <p class="button-note">Инструкция по сбросу пароля будет отправляться на эту почту</p>
-              <p class="form-status" id="recovery-status" aria-live="polite"></p>
-            </form>
-          </div>
-
-          <div class="auth-divider"></div>
-          <p class="auth-bottom" id="auth-bottom">Впервые здесь?<button class="text-link" type="button" data-switch-mode="register">Создать аккаунт</button></p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="page-footer">
-      <span>Virello © <span id="current-year">2026</span></span>
-      <span class="footer-right"><span class="footer-mark"></span> Учись в своём темпе</span>
-    </footer>
-  </div>
-
-  <script>
-    (() => {
-      const authView = document.getElementById('auth-view');
-      const recoveryView = document.getElementById('recovery-view');
-      const title = document.getElementById('auth-title');
-      const description = document.getElementById('auth-description');
-      const bottom = document.getElementById('auth-bottom');
-      const tabs = [...document.querySelectorAll('[data-mode]')];
-      const loginForm = document.getElementById('login-form');
-      const registerForm = document.getElementById('register-form');
-      const recoveryForm = document.getElementById('recovery-form');
-
-      document.getElementById('current-year').textContent = new Date().getFullYear();
-
-      function clearStatuses() {
-        document.querySelectorAll('.form-status').forEach((item) => {
-          item.textContent = '';
-          item.classList.remove('is-error');
-        });
-      }
-
-      function setMode(mode) {
-        const isRegister = mode === 'register';
-        authView.hidden = false;
-        recoveryView.hidden = true;
-        loginForm.hidden = isRegister;
-        registerForm.hidden = !isRegister;
-        title.textContent = isRegister ? 'Создай аккаунт' : 'С возвращением';
-        description.textContent = isRegister
-          ? 'Несколько деталей — и можно настроить твоё учебное пространство'
-          : 'Войди, чтобы продолжить работу';
-        bottom.innerHTML = isRegister
-          ? 'Уже есть аккаунт?<button class="text-link" type="button" data-switch-mode="login">Войти</button>'
-          : 'Впервые здесь?<button class="text-link" type="button" data-switch-mode="register">Создать аккаунт</button>';
-        tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.mode === mode)));
-        clearStatuses();
-      }
-
-      function openRecovery() {
-        authView.hidden = true;
-        recoveryView.hidden = false;
-        clearStatuses();
-        document.getElementById('recovery-email').value = document.getElementById('login-email').value;
-        document.getElementById('recovery-email').focus();
-      }
-
-      function showStatus(id, message, isError = false) {
-        const status = document.getElementById(id);
-        status.textContent = message;
-        status.classList.toggle('is-error', isError);
-      }
-
-      function showPreviewNotice(id) {
-        showStatus(id, 'Это демонстрация интерфейса. Подключение авторизации появится на следующем этапе.');
-      }
-
-      tabs.forEach((tab) => tab.addEventListener('click', () => setMode(tab.dataset.mode)));
-
-      document.addEventListener('click', (event) => {
-        const switchButton = event.target.closest('[data-switch-mode]');
-        if (switchButton) setMode(switchButton.dataset.switchMode);
-      });
-
-      document.getElementById('open-recovery').addEventListener('click', openRecovery);
-      document.getElementById('back-to-auth').addEventListener('click', () => {
-        recoveryView.hidden = true;
-        authView.hidden = false;
-        clearStatuses();
-      });
-
-      loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (!loginForm.reportValidity()) return;
-        showPreviewNotice('login-status');
-      });
-
-      registerForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (!registerForm.reportValidity()) return;
-        showPreviewNotice('register-status');
-      });
-
-      recoveryForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (!recoveryForm.reportValidity()) return;
-        showStatus('recovery-status', 'Форма готова. Отправка письма и сброс пароля будут подключены вместе с серверной частью.');
-      });
-
-      document.querySelectorAll('[data-toggle-password]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const input = document.getElementById(button.dataset.togglePassword);
-          const isVisible = input.type === 'text';
-          input.type = isVisible ? 'password' : 'text';
-          button.setAttribute('aria-pressed', String(!isVisible));
-          button.setAttribute('aria-label', isVisible ? 'Показать пароль' : 'Скрыть пароль');
-        });
-      });
-    })();
-  </script>
+    </section>
+    <section id="historyPage" class="content" hidden><div class="page-head"><div><div class="eyebrow">ВАША РАБОТА</div><h1 class="page-title">История диалогов</h1><p class="page-description">Все ваши недавние обращения к Virello</p></div></div><div id="historyFull"></div></section>
+    <section id="profilePage" class="content" hidden><div class="page-head"><div><div class="eyebrow">АККАУНТ</div><h1 class="page-title">Профиль</h1><p class="page-description">Информация, которая помогает адаптировать ответы под вас</p></div></div><div class="settings-layout"><nav class="settings-nav"><button class="active">Личные данные</button></nav><div class="settings-panel"><div class="panel"><div class="panel-head"><div><h3>Учебный профиль</h3><p>Эти сведения будут использоваться для контекста ваших запросов</p></div></div><div class="onboard-field"><label>Имя</label><input id="profileName" placeholder="Ваше имя"></div><div class="onboard-field"><label>Город</label><input id="profileCity" placeholder="Город"></div><div class="onboard-field"><label>Учебное заведение</label><input id="profileSchool" placeholder="Название учебного заведения"></div><div class="onboard-field"><label>Уровень обучения</label><select class="select" id="profileLevel"><option>Школа</option><option>Колледж</option><option>Университет</option><option>Другое</option></select></div><div class="onboard-field"><label>Класс, курс или специальность</label><input id="profileSpecialty" placeholder="Например, 2 курс — юриспруденция"></div><div class="onboard-field"><label>Дополнительная информация</label><input id="profileExtra" placeholder="Предпочтения, цели, особенности обучения"></div><button class="primary" id="saveProfile">Сохранить изменения</button></div></div></div></section>
+    <section id="settingsPage" class="content" hidden><div class="page-head"><div><div class="eyebrow">ПРЕДПОЧТЕНИЯ</div><h1 class="page-title">Настройки</h1><p class="page-description">Управляйте интерфейсом и параметрами аккаунта</p></div></div><div class="settings-layout"><nav class="settings-nav"><button class="active">Общие</button></nav><div class="settings-panel"><div class="panel"><div class="panel-head"><div><h3>Интерфейс</h3><p>Параметры отображения Virello</p></div></div><div class="setting-row"><div><strong>Язык интерфейса</strong><small>Язык элементов сайта</small></div><span class="setting-value">Русский</span></div><div class="setting-row"><div><strong>Тема оформления</strong><small>Внешний вид рабочего пространства</small></div><span class="setting-value">Тёмная</span></div><div class="setting-row"><div><strong>Анимации</strong><small>Небольшие переходы интерфейса</small></div><button class="toggle on" id="motionToggle" aria-label="Анимации"></button></div></div><div class="panel"><div class="panel-head"><div><h3>Безопасность</h3><p>Управление доступом к аккаунту</p></div></div><div class="setting-row"><div><strong>Электронная почта</strong><small id="settingsEmail">Не указана</small></div><span class="setting-value">Демо</span></div><div class="setting-row"><div><strong>Пароль</strong><small>Изменение пароля аккаунта</small></div><button class="secondary-button" id="changePassword">Изменить</button></div></div><div class="panel"><div class="panel-head"><div><h3>Сеанс</h3><p>Завершить текущий вход</p></div></div><button class="secondary-button" id="logoutButton">Выйти из аккаунта</button></div></div></div></section>
+    <section id="balancePage" class="content" hidden><div class="page-head"><div><div class="eyebrow">ФИНАНСЫ</div><h1 class="page-title">Баланс</h1><p class="page-description">Управление средствами и историей операций</p></div><button class="primary" id="topUpButton">Пополнить</button></div><div class="stat-grid"><div class="stat"><span>Доступно</span><strong id="balanceAmount">₽ 0,00</strong></div><div class="stat"><span>Потрачено</span><strong>₽ 0,00</strong></div><div class="stat"><span>Пополнено</span><strong>₽ 0,00</strong></div></div><div class="panel"><div class="panel-head"><div><h3>История операций</h3><p>Последние движения по вашему счёту</p></div></div><div class="empty-note">Операции появятся после подключения платёжной системы</div></div></section>
+    <section id="adminPage" class="content" hidden><div class="page-head"><div><div class="eyebrow">УПРАВЛЕНИЕ СИСТЕМОЙ</div><h1 class="page-title">Панель администратора</h1><p class="page-description">Демонстрационная конфигурация провайдеров и экономики моделей</p></div></div><div class="stat-grid"><div class="stat"><span>Пользователи</span><strong>0</strong></div><div class="stat"><span>Запросы сегодня</span><strong id="adminRequests">0</strong></div><div class="stat"><span>Расходы API</span><strong>₽ 0</strong></div></div><div class="panel"><div class="panel-head"><div><h3>Провайдеры моделей</h3><p>Ключи API должны храниться только на сервере, не в браузере</p></div></div><div class="provider-grid"><div class="provider"><h4>Virello Standard</h4><label>Провайдер</label><select><option>OpenAI</option><option>DeepSeek</option><option>Anthropic</option></select></div><div class="provider"><h4>Virello Plus</h4><label>Провайдер</label><select><option>Anthropic</option><option>OpenAI</option><option>DeepSeek</option></select></div><div class="provider"><h4>Virello Pro</h4><label>Провайдер</label><select><option>OpenAI</option><option>Anthropic</option><option>DeepSeek</option></select></div><div class="provider"><h4>Virello Max</h4><label>Провайдер</label><select><option>Anthropic</option><option>OpenAI</option><option>DeepSeek</option></select></div></div><button class="primary" id="saveProviders" style="margin-top:17px">Сохранить конфигурацию</button></div></section>
+  </main>
+</div>
+<nav class="mobile-nav" id="mobileNav" hidden><button class="active" data-page="chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></svg>Чат</button><button data-page="history"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5m4-1v5l4 2"/></svg>История</button><button data-page="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Профиль</button><button data-page="balance"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>Баланс</button></nav>
+<div class="overlay" id="modalOverlay" hidden><div class="modal" id="modalContent" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const state={authMode:'login',user:{name:'Пользователь',email:'',city:'',school:'',level:'',specialty:'',extra:''},onboard:{level:'',goal:'',name:'',city:'',school:'',specialty:''},onboardStep:0,page:'chat',model:'Standard',reason:'Сбалансированно',web:false,files:[],messages:[],history:[],balance:0,requests:0,admin:false};
+const models=[{id:'Standard',name:'Virello Standard',desc:'Быстрые ответы и повседневные учебные задачи',price:'Базовая стоимость'},{id:'Plus',name:'Virello Plus',desc:'Более подробные объяснения и работа с текстами',price:'Средняя стоимость'},{id:'Pro',name:'Virello Pro',desc:'Сложные задачи и многоэтапный анализ',price:'Повышенная стоимость'},{id:'Max',name:'Virello Max',desc:'Максимальная глубина и качество обработки',price:'Максимальная стоимость'}];
+const $auth=$('#authScreen'),$app=$('#appScreen');
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function setAuth(mode){state.authMode=mode;const reg=mode='register',forgot=mode='forgot';$('#authTitle').textContent=reg?'Создать аккаунт':forgot?'Восстановление доступа':'Продолжить обучение';$('#authSubtitle').textContent=reg?'Создайте аккаунт для своего учебного пространства':forgot?'Укажите почту, привязанную к аккаунту':'Войдите, чтобы открыть своё учебное пространство';$('#nameField').hidden=!reg;$('#confirmField').hidden=!reg;$('#consentRow').hidden=!reg;$('#forgotRow').hidden=reg||forgot;$('#passwordField').hidden=forgot;$('#authBack').hidden=!forgot;$('#authSubmit').textContent=reg?'Зарегистрироваться':forgot?'Отправить инструкцию':'Войти';$('#authSwitch').hidden=forgot;$('#authSwitch').innerHTML=reg?'Уже есть аккаунт? <button class="text-button" type="button" data-auth="login">Войти</button>':'Нет аккаунта? <button class="text-button" type="button" data-auth="register">Создать аккаунт</button>';$('#authMessage').textContent='';$('#authPassword').required=!forgot;$('#authConfirm').required=reg}
+function enterApp(){ $auth.hidden=true;$app.hidden=false;$('#mobileNav').hidden=false;renderProfile();updateBalance();go('chat');renderHistoryList()}
+function renderProfile(){const n=state.user.name||'Пользователь';$('#sideName').textContent=n;$('#sideEmail').textContent=state.user.email||'Мой профиль';$('#sideAvatar').textContent=n.trim().charAt(0).toUpperCase()||'П';$('#profileName').value=state.user.name||'';$('#profileCity').value=state.user.city||'';$('#profileSchool').value=state.user.school||'';$('#profileLevel').value=state.user.level||'Школа';$('#profileSpecialty').value=state.user.specialty||'';$('#profileExtra').value=state.user.extra||'';$('#settingsEmail').textContent=state.user.email||'Не указана'}
+function updateBalance(){const v='₽ '+state.balance.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});$('#sideBalance').textContent=v;$('#topBalance').textContent=v;$('#balanceAmount').textContent=v;$('#adminRequests').textContent=state.requests}
+function go(page){state.page=page;const pages=['chat','history','profile','settings','balance','admin'];pages.forEach(p=>{const el=$('#'+p+'Page');if(el)el.hidden=p!page});$$('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page=page));$('#crumb').textContent=({chat:'Новый диалог',history:'История',profile:'Профиль',settings:'Настройки',balance:'Баланс',admin:'Администрирование'})[page]||'Virello';if(page='history')renderHistory();if(page='profile')renderProfile()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('#authForm').addEventListener('submit',e=>{e.preventDefault();const mode=state.authMode,email=$('#authEmail').value.trim(),pass=$('#authPassword').value;if(!email){return}if(mode='forgot'){const m=$('#authMessage');m.textContent='Восстановление заработает после подключения почтового сервиса и backend';m.className='form-message';return}if(mode='register'){if(pass.length<8){toast('Пароль должен содержать не менее 8 символов');return}if(pass!$('#authConfirm').value){toast('Пароли не совпадают');return}if(!$('#consentCheck').checked){toast('Подтвердите согласие с условиями');return}state.user.name=$('#authName').value.trim()||'Студент';state.user.email=email;enterApp();openOnboarding();return}state.user.email=email;state.user.name=email.split('@')[0]||'Пользователь';enterApp();openOnboarding()});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-auth]');if(a)setAuth(a.dataset.auth);const p=e.target.closest('[data-page]');if(p&& !$app.hidden)go(p.dataset.page)});
+$('#showPass').addEventListener('click',()=>{const p=$('#authPassword');p.type=p.type='password'?'text':'password'});
+function openOnboarding(){state.onboardStep=0;renderOnboarding()}
+function renderOnboarding(){const step=state.onboardStep,steps=[{title:'Где вы учитесь?',sub:'Выберите уровень обучения',choices:['Школа','Колледж','Университет','Другое']},{title:'Для чего будете использовать Virello?',sub:'Можно выбрать основную задачу',choices:['Помощь с домашними заданиями','Объяснение сложных тем','Рефераты и доклады','Курсовые и дипломные работы','Подготовка к экзаменам','Работа с текстами и источниками']},{title:'Немного о вас',sub:'Это поможет точнее адаптировать объяснения',fields:true}];const s=steps[step];showModal(`<div class="step-count">Шаг ${step+1} из 3</div><div class="progress-line"><span style="width:${(step+1)/3*100}%"></span></div><div class="modal-head"><div><h2>${s.title}</h2><p>${s.sub}</p></div><button class="close" data-close aria-label="Закрыть">×</button></div>${s.choices?`<div class="choice-grid">${s.choices.map((v,i)=>`<button class="choice ${((step=0&&state.onboard.level=v)||(step=1&&state.onboard.goal=v))?'selected':''}" data-choice="${esc(v)}"><strong>${esc(v)}</strong></button>`).join('')}</div>`:`<div class="onboard-field"><label>Имя</label><input id="obName" value="${esc(state.onboard.name||state.user.name)}" placeholder="Как к вам обращаться"></div><div class="onboard-field"><label>Город</label><input id="obCity" value="${esc(state.onboard.city)}" placeholder="Город"></div><div class="onboard-field"><label>Учебное заведение</label><input id="obSchool" value="${esc(state.onboard.school)}" placeholder="Название учебного заведения"></div><div class="onboard-field"><label>Класс, курс или специальность</label><input id="obSpecialty" value="${esc(state.onboard.specialty)}" placeholder="Например, 2 курс — юриспруденция"></div>`}<div class="modal-actions"><button class="secondary-button" id="obBack" ${step=0?'disabled':''}>Назад</button><button class="primary" id="obNext">${step=2?'Завершить':'Продолжить'}</button></div>`);$$('[data-choice]').forEach(b=>b.addEventListener('click',()=>{if(step=0)state.onboard.level=b.dataset.choice;else state.onboard.goal=b.dataset.choice;renderOnboarding()}));$('#obBack').addEventListener('click',()=>{if(step>0){state.onboardStep--;renderOnboarding()}});$('#obNext').addEventListener('click',()=>{if(step=2){state.onboard.name=$('#obName').value.trim();state.onboard.city=$('#obCity').value.trim();state.onboard.school=$('#obSchool').value.trim();state.onboard.specialty=$('#obSpecialty').value.trim();Object.assign(state.user,{name:state.onboard.name||state.user.name,city:state.onboard.city,school:state.onboard.school,level:state.onboard.level,specialty:state.onboard.specialty});closeModal();renderProfile();toast('Учебный профиль настроен')}else{state.onboardStep++;renderOnboarding()}})}
+function showModal(html,wide=false){$('#modalContent').classList.toggle('wide',wide);$('#modalContent').innerHTML=html;$('#modalOverlay').hidden=false}function closeModal(){$('#modalOverlay').hidden=true;$('#modalContent').innerHTML=''}$('#modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay'||e.target.closest('[data-close]'))closeModal()});
+$('#modelButton').addEventListener('click',()=>{showModal(<div class="modal-head"><div><h2>Выберите модель</h2><p>Уровень модели определяет скорость и глубину ответа</p></div><button class="close" data-close>×</button></div><div class="model-list">${models.map(m=><button class="model-option ${state.model=m.id?'selected':''}" data-model="${m.id}"><span><strong>${m.name}</strong><small>${m.desc}</small></span><span style="display:flex;align-items:center;gap:10px"><em>${m.price}</em><i class="radio-mark"></i></span></button>).join('')}</div>);$$('[data-model]').forEach(b=>b.addEventListener('click',()=>{state.model=b.dataset.model;$('#modelLabel').textContent='Virello '+state.model;$('#modeFoot').textContent=state.model+' · '+models.find(m=>m.id=state.model).price.toLowerCase();closeModal()}))}); 
+$('#reasonButton').addEventListener('click',()=>{const opts=['Быстро','Сбалансированно','Глубоко','Максимально'];showModal(<div class="modal-head"><div><h2>Глубина ответа</h2><p>Влияет на предполагаемую сложность обработки запроса</p></div><button class="close" data-close>×</button></div><div class="model-list">${opts.map((o,i)=><button class="model-option ${state.reason=o?'selected':''}" data-reason="${o}"><span><strong>${o}</strong><small>${['Короткий ответ без лишних шагов','Баланс скорости и подробности','Больше этапов анализа','Наиболее тщательная проработка'][i]}</small></span><i class="radio-mark"></i></button>).join('')}</div>);$$('[data-reason]').forEach(b=>b.addEventListener('click',()=>{state.reason=b.dataset.reason;$('#reasonLabel').textContent=state.reason;closeModal()}))}); 
+$('#searchButton').addEventListener('click',()=>{state.web=!state.web;$('#searchButton').classList.toggle('active',state.web);toast(state.web?'Поиск включён для следующего запроса':'Поиск выключен')}); 
+$('#fileInput').addEventListener('change',e=>{[...e.target.files].forEach(f=>state.files.push(f));renderFiles();e.target.value=''});function renderFiles(){$('#attachedFiles').innerHTML=state.files.map((f,i)=><span class="file-chip">${esc(f.name)} <button data-remove-file="${i}" aria-label="Удалить файл">×</button></span>).join('');$$('[data-remove-file]').forEach(b=>b.addEventListener('click',()=>{state.files.splice(+b.dataset.removeFile,1);renderFiles()}))} 
+$('#promptInput').addEventListener('input',()=>{$('#sendButton').disabled=!$('#promptInput').value.trim()&&!state.files.length});$('#promptInput').addEventListener('keydown',e=>{if(e.key='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}});$('#sendButton').addEventListener('click',sendMessage); 
+function addMessage(role,text){state.messages.push({role,text});renderMessages()} 
+function renderMessages(){const el=$('#conversation');el.innerHTML=state.messages.map(m=><article class="message-row"><div class="message-avatar ${m.role==='user'?'user':''}">${m.role==='user'?'В':'v'}</div><div class="message-body"><div class="message-author">${m.role==='user'?esc(state.user.name||'Вы'):'Virello '+state.model}</div><div class="message-text">${m.role==='assistant'?formatText(m.text):esc(m.text)}</div>${m.role==='assistant'?'<div class="message-actions"><button class="tiny-action" data-copy>Копировать</button><button class="tiny-action" data-feedback>Ответ полезен</button></div>':''}</div></article>).join('');$$('[data-copy]').forEach((b,i)=>b.addEventListener('click',()=>{const text=state.messages.filter(m=>m.role='assistant')[i]?.text||'';navigator.clipboard?.writeText(text).then(()=>toast('Ответ скопирован')).catch(()=>toast('Не удалось скопировать'))}));$$('[data-feedback]').forEach(b=>b.addEventListener('click',()=>toast('Спасибо за обратную связь')));$('#chatIntro').hidden=state.messages.length>0;$('#chatScroll').scrollTop=$('#chatScroll').scrollHeight} 
+function formatText(t){return esc(t).replace(/**(.?)**/g,'<strong>$1</strong>').replace(/^### (.)$/gm,'<strong>$1</strong>').replace(/\n/g,'<br>')} 
+function sendMessage(){const input=$('#promptInput'),text=input.value.trim();if(!text&&!state.files.length)return;const files=state.files.map(f=>f.name);addMessage('user',text+(files.length?'\nФайлы: '+files.join(', '):''));input.value='';state.files=[];renderFiles();$('#sendButton').disabled=true;state.requests++;updateBalance();const row=document.createElement('article');row.className='message-row';row.id='typingRow';row.innerHTML='<div class="message-avatar">v</div><div class="message-body"><div class="message-author">Virello '+state.model+'</div><div class="typing"><span></span><span></span><span></span></div></div>';$('#conversation').append(row);$('#chatIntro').hidden=true;$('#chatScroll').scrollTop=$('#chatScroll').scrollHeight;setTimeout(()=>{row.remove();const reply='Это демонстрационный интерфейс Virello. Подключение языковой модели пока не настроено, поэтому настоящий ответ здесь не генерируется.\n\nПосле подключения backend этот запрос будет передан выбранной модели с учебным контекстом профиля. Сейчас можно проверить интерфейс чата, выбор модели, глубину ответа и прикрепление файлов.';addMessage('assistant',reply);saveHistory(text)},700)} 
+function saveHistory(text){if(!text)return;const title=text.length>42?text.slice(0,42)+'…':text;const item={title,messages:[...state.messages]};state.history.unshift(item);renderHistoryList()} 
+function renderHistoryList(){$('#historyList').innerHTML=state.history.slice(0,12).map((h,i)=><button class="history-item" data-history="${i}">${esc(h.title)}</button>).join('')||'<div class="empty-note">Здесь появятся ваши диалоги</div>';$$('[data-history]').forEach(b=>b.addEventListener('click',()=>loadHistory(+b.dataset.history)))} 
+function loadHistory(i){state.messages=[...state.history[i].messages];renderMessages();go('chat')} 
+function renderHistory(){$('#historyFull').innerHTML=state.history.length?state.history.map((h,i)=><button class="history-item" style="width:100%;height:auto;padding:15px 12px;border-bottom:1px solid var(--line);border-radius:0" data-full-history="${i}">${esc(h.title)} <span class="muted" style="float:right">Открыть →</span></button>).join(''):'<div class="empty-note">У вас пока нет сохранённых диалогов</div>';$$('[data-full-history]').forEach(b=>b.addEventListener('click',()=>loadHistory(+b.dataset.fullHistory)))} 
+$('#saveProfile').addEventListener('click',()=>{Object.assign(state.user,{name:$('#profileName').value.trim(),city:$('#profileCity').value.trim(),school:$('#profileSchool').value.trim(),level:$('#profileLevel').value,specialty:$('#profileSpecialty').value.trim(),extra:$('#profileExtra').value.trim()});renderProfile();toast('Профиль сохранён')}); 
+$('#logoutButton').addEventListener('click',()=>{state.messages=[];state.history=[];state.user={name:'Пользователь',email:'',city:'',school:'',level:'',specialty:'',extra:''};$app.hidden=true;$('#mobileNav').hidden=true;$auth.hidden=false;setAuth('login');toast('Вы вышли из аккаунта')}); 
+$('#topUpButton').addEventListener('click',()=>showModal('<div class="modal-head"><div><h2>Пополнение баланса</h2><p>Платёжная система пока не подключена</p></div><button class="close" data-close>×</button></div><div class="empty-note">После подключения платёжного провайдера здесь появятся способы оплаты и выбор суммы</div><div class="modal-actions"><button class="primary" data-close>Понятно</button></div>')); 
+$('#changePassword').addEventListener('click',()=>showModal('<div class="modal-head"><div><h2>Изменение пароля</h2><p>Функция станет доступна после подключения backend</p></div><button class="close" data-close>×</button></div><div class="empty-note">Управление паролями пока не подключено</div><div class="modal-actions"><button class="primary" data-close>Закрыть</button></div>')); 
+$('#saveProviders').addEventListener('click',()=>toast('Выбор провайдеров показан для демонстрации. Серверная настройка не подключена')); 
+$('#motionToggle').addEventListener('click',e=>{e.currentTarget.classList.toggle('on');document.documentElement.style.setProperty('--motion',e.currentTarget.classList.contains('on')?'1':'0')}); 
+$('#fileButton').addEventListener('click',()=>$('#fileInput').click()); 
+$$('[data-prompt]').forEach(b=>b.addEventListener('click',()=>{$('#promptInput').value=b.dataset.prompt;$('#sendButton').disabled=false;$('#promptInput').focus()})); 
+// Admin preview is intentionally not linked from regular navigation. Enable through URL hash. 
+if(location.hash='#admin'){state.admin=true;const b=document.createElement('button');b.className='nav-item';b.dataset.page='admin';b.textContent='Администрирование';$('.nav-list').append(b)} 
+renderHistoryList(); 
+})(); 
+</script>
 </body>
 </html>
